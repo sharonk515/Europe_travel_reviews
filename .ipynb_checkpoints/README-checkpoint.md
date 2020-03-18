@@ -2,9 +2,12 @@
 
 by Sharon Kwak
 
-- Which type of tourist sites are the most popular?
-- Can a review of one type predict the user's review for another type?
+- Which type of tourist sites are the most popular? Overall? For each group of users?
 - What groups can be created based on users' reviews of tourist sites?
+- Which tourist attractions in other areas can be recommended to these users based on their ratings?
+- What type of travel media content should be created for each group of users (e.g. advertisement, leisure/entertainment)?
+- Can a review of one type predict the user's review for another type?
+- Ratings for which type of tourist sites have the most impact on the group assignments?
 
 ## Dataset
 [UCI Europe Travel Review Ratings](https://archive.ics.uci.edu/ml/datasets/Tarvel+Review+Ratings)
@@ -36,11 +39,11 @@ According to the elbow visualizer above, 4 was the most optimal. Using 4 as the 
 
 Based on the clusters, I found the average ratings for each tourist site type and explored the most and least popular sites for each cluster.
 
-**Most popular sites**
+<center><b>Most popular sites</b></center>
 
 <img src = 'Images/popular_sites.png'>
 
-**Least popular sites**
+<center><b>Least popular sites</b></center>
 
 <img src = 'Images/least_popular_sites.png'>
 
@@ -68,3 +71,24 @@ Using the clusters from above as the classes, I trained a classification model t
 
 <img src = 'Images/class_balance.png'>
 
+Due to the class imbalance, I used the SMOTE Oversampling method to balance the classes. With the balanced classes, I started with the Linear Support Vector Classifier (Linear SVC) algorithm. I decided to start out with Linear SVC due to it being known to work well on small number of examples and known for fast training times. It also works well with continuous features, and all of the features of this dataset are continuous.
+
+### Results
+Linear SVC came out to be the best performing model with an f1-score of 99.6%. As you can see below in the confusion matrix, only 7 values were misidentified while the others were all correctly identified.
+
+<img src = 'Images/confusion_matrix.png'>
+
+Through observing the coefficients from the SVC model, juice bars, theatres, and art galleries had the highest absolute coefficients and thus more impact on identifying the groups. Juice bars and art galleries had a positive impact (the higher the ratings, the higher the cluster group number). Theatres, on the other hand, had a negative impact (the lower the ratings, the higher the cluster group number).
+
+<img src = 'Images/feat_imp.png'>
+
+**Note**: In case the SVC model did not perform well, I would have used KNN, LightGBM, and Random Forest for a better model. I used these other models, with the exception of Random Forest, for this project as well to double check that there aren't huge discrepancies in the model performances.
+
+## Next Steps
+With more time, I would have done a correlation exploration for each of the clusters, analyzing the relationships between different pairs of tourist site types to see if the tourist site types have linear relationships in any or all of the clusters. 
+
+With more resources, I would first like to collect data from more users and from more travel sites to have a more accurate model since this particular dataset was small and was only from one website. I would also like to collect written reviews that go along with the numerical ratings or categorized ratings (e.g. convenience, cleanliness, engaging, location, etc.), if available, to conduct a textual analysis and/or a deeper study of their ratings and better understand what they liked and disliked for each type, their interests, etc.
+
+It would also be interesting to see relationships of users' demographics and their ratings (e.g. Do women enjoy a certain type of tourist sites more than men? Does a particular race/ethnicity give a specific tourist site type higher ratings than others?)
+
+I would also like to compare their travel interests with their entertainment interests, collecting data of these users' ratings of entertainment and media content to explore whether a users' travel ratings can help predict their interest in particular entertainment and media content.
